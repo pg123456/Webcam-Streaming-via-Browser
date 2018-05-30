@@ -1,0 +1,47 @@
+<html>
+<script language="JavaScript">
+
+    // temp
+    var g_current_frame = 0;
+
+function Render()
+{
+    var img = document.getElementById("my_img");
+    function UpdateImage() 
+    {
+        // image.src = image.src.split("?")[0] + "?" + new Date().getTime();
+        var new_src = "";
+		var xhr = new XMLHttpRequest();
+		xhr.addEventListener('readystatechange', function(){
+			if(this.readyState == 4 && this.status == 200)
+			{
+				new_src = this.responseText;
+				if(new_src)
+				{
+					img.src = new_src;
+				}
+			}
+		});
+		xhr.open("GET","/getframe", true);
+		xhr.send();
+    }
+
+    setInterval(UpdateImage, 0);
+	//UpdateImage();
+}
+
+function PageLoaded()
+{
+    document.activeElement.innerHTML = 
+        '<html> <body> <img id="my_img" src="http://dreamicus.com/data/cat/cat-01.jpg" alt="broken image"> </body> </html>';
+
+    Render();
+}
+
+
+
+</script>
+<body onload="PageLoaded()">
+    (loading...)
+</body>
+</html>
